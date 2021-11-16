@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use phpDocumentor\Reflection\DocBlock\Tag;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,6 +14,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        $this->call([
+            RoleSeeder::class,
+            RoleplusSeeder::class,
+            LikeSeeder::class,
+            NoteSeeder::class,
+            TagSeeder::class,
+            UserSeeder::class
+        ]);
     }
 }

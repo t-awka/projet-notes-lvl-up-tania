@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Note;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NoteController extends Controller
 {
@@ -14,7 +15,8 @@ class NoteController extends Controller
      */
     public function index()
     {
-        //
+        $notes = Note::all();
+        return view('pages.personnal', compact('notes'));
     }
 
     /**
@@ -24,7 +26,7 @@ class NoteController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.createnote');
     }
 
     /**
@@ -35,11 +37,17 @@ class NoteController extends Controller
      */
     public function store(Request $request)
     {
-        $notes = Note::create([
-            'title' => $request->title,
-            'content' => $request->content,
-			'like' => $request->like,
+        request()->validate([
+            'title' => ["required"],
+            'content' => ["required"],
         ]);
+        $store = new Note();
+        $store->title = $request->title;
+        $store->content = $request->content;
+        $store->save();
+        $store->rolepluses()->attach(1);
+        $store->users()->attach(Auth::user()->id);
+        return redirect('/note');
     }
 
     /**
@@ -48,9 +56,10 @@ class NoteController extends Controller
      * @param  \App\Models\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function show(Note $note)
+    public function show($id)
     {
-        //
+        $show = Note::find($id);
+        return view("pages.thisnote",compact('show'));
     }
 
     /**
@@ -82,8 +91,10 @@ class NoteController extends Controller
      * @param  \App\Models\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Note $note)
+    public function destroy($id)
     {
-        //
+        $destroy = Note::find($id);
+        $destroy->delete();
+        return redirect('/note');
     }
 }

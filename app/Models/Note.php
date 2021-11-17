@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Note extends Model
 {
     use HasFactory;
+    public function rolepluses(){
+        return $this->belongsToMany(Roleplus::class);
+    }
+    public function users(){
+        return $this->belongsToMany(User::class);
+    }
 }

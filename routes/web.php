@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\NoteController;
+use App\Models\Note;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +18,18 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/allnote', function () {
+    $notes = Note::all();
+    return view('pages.allnote', compact('notes'));
+});
+
+Route::get('/createnote', function () {
+    $notes = Note::all();
+    return view('pages.createnote', compact('notes'));
+});
+
+Route::resource('note', NoteController::class);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -17,7 +17,7 @@ class CreateNotesTable extends Migration
             $table->id();
             $table->string('title');
             $table->longText('content');
-            $table->integer('like');
+            $table->integer('like')->nullable();
             $table->timestamps();
         });
     }

@@ -147,9 +147,37 @@ class NoteController extends Controller
      * @param  \App\Models\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Note $note)
+    public function update(Request $request, $id)
     {
-        //
+        $update = Note::find($id);
+        $tags = Note_tag::where('note_id', $update->id)->get();
+        foreach ($tags as $tag) {
+            $tag->delete();
+        }
+        $tab_tag = [$request->tag1, $request->tag2, $request->tag3];
+        $new_tab = [];
+        foreach ($tab_tag as $tag) {
+            $i = array_search($tag, $tab_tag);
+            if ($tag != null) {
+                array_push($new_tab, $tag);
+            }
+        }
+        $update->title = $request->title;
+        $update->content = $request->content;
+        $update->save();
+
+        foreach ($new_tab as $tag) {
+            $new_tag = new Tag();
+            $new_tag->tag = $tag;
+            $new_tag->save();
+            $update->tags()->attach($new_tag->id);
+        }
+
+        $update_pivots = Note_role_user::where('note_id', $update->id)->where("user_id", Auth::user()->id)->first();
+        $update_pivots->roleplus_id = 2;
+        $update_pivots->save();
+
+        return redirect('/note/'.$update->id);
     }
 
     /**

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Like;
 use App\Models\Note;
+use App\Models\Note_role_user;
+use App\Models\Note_tag;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -153,6 +155,21 @@ class NoteController extends Controller
     public function destroy($id)
     {
         $destroy = Note::find($id);
+        $likes = Like::where('note_id', $destroy->id)->get();
+        foreach ($likes as $like) {
+            $user = User::find($like->user_id);
+            $user->aime -= 1;
+            $user->save();
+            $like->delete();
+        }
+        $tags = Note_tag::where('note_id', $destroy->id)->get();
+        foreach ($tags as $tag) {
+            $tag->delete();
+        }
+        $noteroleusers = Note_role_user::where('note_id', $destroy->id)->get();
+        foreach ($noteroleusers as $noteroleuser) {
+            $noteroleuser->delete();
+        }
         $destroy->delete();
         return redirect('/note');
     }

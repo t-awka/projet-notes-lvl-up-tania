@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Note_role_user extends Model
 {
     use HasFactory;
+    protected $table = "note_role_user_pivots";
+    
 }

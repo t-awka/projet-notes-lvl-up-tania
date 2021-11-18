@@ -19,8 +19,14 @@ class ShareController extends Controller
     public function index()
     {
         $notes = Note::all();
-        // dd($shar);
-        return view('pages.share', compact('notes'));
+        $user = User::find(Auth::user()->id);
+        $shares = $user->shares;
+        $shared = [];
+        foreach ($shares as $share) {
+            array_push($shared, $share);
+        }
+
+        return view('pages.share', compact('notes', 'shared'));
     }
 
     /**

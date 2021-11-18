@@ -8,5 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Share extends Model
 {
     use HasFactory;
-    
+    public function shares(){
+        return $this->belongsToMany(Note::class, 'shares');
+    }
 }

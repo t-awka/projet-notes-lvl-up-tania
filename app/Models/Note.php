@@ -20,4 +20,7 @@ class Note extends Model
     public function likes(){
         return $this->belongsToMany(Like::class, 'likes');
     }
+    public function shares(){
+        return $this->belongsToMany(Note::class, 'shares');
+    }
 }

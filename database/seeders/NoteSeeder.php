@@ -14,10 +14,10 @@ class NoteSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('notes')->insert([
-            ['title' => 'Ma première note',
-            'content' => "Lorem ipsum",
-            'like' => 2]
-        ]);
+        // DB::table('notes')->insert([
+        //     ['title' => 'Ma première note',
+        //     'content' => "Lorem ipsum",
+        //     'like' => 2]
+        // ]);
     }
 }

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Like;
+use App\Models\Note;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class LikeController extends Controller
 {
@@ -15,7 +18,14 @@ class LikeController extends Controller
      */
     public function index()
     {
-        //
+        $notes = Note::all();
+        $user = User::find(Auth::user()->id);
+        $likes = $user->likes;
+        $test = [];
+        foreach ($likes as $like) {
+            array_push($test, $like);
+        }
+        return view('pages.like',compact('notes', 'test'));
     }
 
     /**

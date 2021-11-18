@@ -6,6 +6,8 @@ use App\Models\Note;
 use App\Models\Share;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ShareController extends Controller
 {
@@ -16,8 +18,9 @@ class ShareController extends Controller
      */
     public function index()
     {
-        $shares = Share::all();
-        return view('pages.share', compact('shares'));
+        $notes = Note::all();
+        // dd($shar);
+        return view('pages.share', compact('notes'));
     }
 
     /**

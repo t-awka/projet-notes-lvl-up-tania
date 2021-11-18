@@ -8,6 +8,7 @@ use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class NoteController extends Controller
 {
@@ -19,6 +20,7 @@ class NoteController extends Controller
     public function index()
     {
         $notes = Note::all();
+        // $perso = DB::table('note_role_user_pivots')->where('user_id', Auth::user()->id)->get();
         return view('pages.personnal', compact('notes'));
     }
 
@@ -53,14 +55,13 @@ class NoteController extends Controller
                 array_push($new_tab, $tag);
             }
         }
+
         // création d'une nouvelle note
         $store = new Note();
         $store->title = $request->title;
         $store->content = $request->content;
         $store->save();
-        // création de la relation many to many entre le rôle éditeur et le user (auteur de la note)
-        $store->rolepluses()->attach(1);
-        $store->users()->attach(Auth::user()->id);
+
         // boucle pour attacher la note avec ses tags
         foreach ($new_tab as $tag) {
             $new_tag = new Tag();
@@ -68,20 +69,43 @@ class NoteController extends Controller
             $new_tag->save();
             $store->tags()->attach($new_tag->id);
         }
+
+        DB::table("note_role_user_pivots")->insert([
+            [
+                "note_id" => $store->id,
+                "roleplus_id" => 1,
+                "user_id" => Auth::user()->id,
+            ]
+        ]);
+
         return redirect('/note');
     }
 
     public function like($id){
         $note = Note::find($id);
-        $note->like += 1;
+        $note->aime += 1;
         $note->save();
-        $like = new Like();
-        $like->note_id = $note->id;
-        $like->user_id = Auth::user()->id;
-        $like->save();
+        DB::table("likes")->insert([
+            [
+                "note_id" => $note->id,
+                "user_id" => Auth::user()->id,
+            ]
+        ]);
         $user = User::find(Auth::user()->id);
-        $user->likes += 1;
+        $user->aime += 1;
         $user->save();
+        return redirect()->back();
+    }
+
+    public function unlike($id){
+        $user = User::find(Auth::user()->id);
+        $note = Note::find($id);
+        $like = Like::where('note_id', $note->id)->where('user_id', $user->id)->first();
+        $like->delete();
+        $user->aime -= 1;
+        $user->save();
+        $note->aime -= 1;
+        $note->save();
         return redirect()->back();
     }
 

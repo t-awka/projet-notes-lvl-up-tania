@@ -73,11 +73,10 @@
             @endforeach --}}
 
         {{-- @endforeach --}}
-
-        @foreach ($shares as $share)
-            @foreach ($share->notes as $note)
-                <h1>{{$note->title}}</h1>
-            @endforeach
+        
+        @foreach ($notes as $note)
+            <h1>{{$note->shares}}</h1>
         @endforeach
+        
     </div>
 @endsection

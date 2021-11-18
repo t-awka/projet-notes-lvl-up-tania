@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class NoteUser extends Migration
+class NoteRoleUserPivots extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class NoteUser extends Migration
      */
     public function up()
     {
-        Schema::create('note_user', function(Blueprint $table){
+        Schema::create('note_role_user_pivots', function (Blueprint $table) {
             $table->id();
             $table->foreignId('note_id')->constrained('notes');
+            $table->foreignId('roleplus_id')->constrained('rolepluses');
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });

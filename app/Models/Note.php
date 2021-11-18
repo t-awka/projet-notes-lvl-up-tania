@@ -12,9 +12,12 @@ class Note extends Model
         return $this->belongsToMany(Roleplus::class);
     }
     public function users(){
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'note_role_user_pivots');
     }
     public function tags(){
         return $this->belongsToMany(Tag::class);
+    }
+    public function likes(){
+        return $this->belongsToMany(Like::class, 'likes');
     }
 }

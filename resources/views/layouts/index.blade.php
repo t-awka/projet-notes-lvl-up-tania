@@ -30,7 +30,7 @@
             <div class="container flex items-center justify-center p-6 mx-auto text-gray-600 capitalize dark:text-gray-300">
                 <a href="/" class="text-gray-800 dark:text-gray-200 border-b-2 border-red-400 mx-1.5 sm:mx-6">home</a>
 
-                <a href="allnote"
+                <a href="/allnote"
                     class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-red-400 mx-1.5 sm:mx-6">Toutes les notes</a>
 
                 <a href="/note"
@@ -42,7 +42,7 @@
                 <a href="/share"
                     class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-red-400 mx-1.5 sm:mx-6">Notes partagées</a>
 
-                <a href="#"
+                <a href="/like"
                     class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-red-400 mx-1.5 sm:mx-6">Likes</a>
 
                 @if (Route::has('login'))

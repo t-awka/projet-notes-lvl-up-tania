@@ -13,8 +13,12 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     public function notes(){
-        return $this->belongsToMany(Note::class);
+        return $this->belongsToMany(Note::class, 'note_role_user_pivots');
     }
+    public function likes(){
+        return $this->belongsToMany(Note::class, 'likes');
+    }
+
 
     /**
      * The attributes that are mass assignable.

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateNoteTagsTable extends Migration
+class CreateSharesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateNoteTagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('note_tag', function (Blueprint $table) {
+        Schema::create('shares', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users');
             $table->foreignId('note_id')->constrained('notes');
-            $table->foreignId('tag_id')->constrained('tags');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateNoteTagsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('note_tags');
+        Schema::dropIfExists('shares');
     }
 }

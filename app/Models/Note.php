@@ -14,4 +14,7 @@ class Note extends Model
     public function users(){
         return $this->belongsToMany(User::class);
     }
+    public function tags(){
+        return $this->belongsToMany(Tag::class);
+    }
 }

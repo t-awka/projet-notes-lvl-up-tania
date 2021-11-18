@@ -1,7 +1,11 @@
 <?php
 
 use App\Http\Controllers\NoteController;
+use App\Http\Controllers\ShareController;
+use App\Models\Like;
 use App\Models\Note;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,7 +25,8 @@ Route::get('/', function () {
 
 Route::get('/allnote', function () {
     $notes = Note::all();
-    return view('pages.allnote', compact('notes'));
+    $likes = Like::all();
+    return view('pages.allnote', compact('notes', 'likes'));
 });
 
 Route::get('/createnote', function () {
@@ -30,6 +35,10 @@ Route::get('/createnote', function () {
 });
 
 Route::resource('note', NoteController::class);
+Route::resource('share', ShareController::class);
+Route::post('/note/like/{id}', [NoteController::class, 'like']);
+Route::get('/share/{id}/sharing', [ShareController::class, 'sharecreate']);
+Route::post('/share/{id}/shared', [ShareController::class, 'share']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

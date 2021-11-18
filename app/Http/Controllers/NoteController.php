@@ -129,9 +129,15 @@ class NoteController extends Controller
      * @param  \App\Models\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function edit(Note $note)
+    public function edit($id)
     {
-        //
+        $edit = Note::find($id);
+        // $tags = Note_tag::where('note_id', $edit->id)->get();
+        $tabtags = [];
+        foreach ($edit->tags as $tag) {
+            array_push($tabtags, $tag->tag);
+        }
+        return view('pages.editnote', compact('edit', 'tabtags'));
     }
 
     /**

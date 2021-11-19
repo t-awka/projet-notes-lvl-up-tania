@@ -26,7 +26,9 @@ class ShareController extends Controller
             array_push($shared, $share);
         }
 
-        return view('pages.share', compact('notes', 'shared'));
+        $tab = DB::table('likes')->where('user_id', Auth::user()->id)->get();
+
+        return view('pages.share', compact('notes', 'shared', 'tab'));
     }
 
     /**
@@ -50,7 +52,7 @@ class ShareController extends Controller
     }
 
     public function sharecreate($id){
-        $users = User::all();
+        $users = User::where('id' , '!=', Auth::user()->id)->get();
         $notes = Note::find($id);
         return view('pages.shareform', compact('users', 'notes'));
     }
@@ -61,7 +63,7 @@ class ShareController extends Controller
         $share->user_id = $request->user;
         $share->note_id = $note->id;
         $share->save();
-        return redirect('/note');
+        return redirect('/note')->with('info', 'Partage effectué avec succès');
     }
 
     /**

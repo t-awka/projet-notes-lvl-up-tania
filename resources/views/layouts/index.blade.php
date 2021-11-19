@@ -13,10 +13,11 @@
         body {
             font-family: 'Nunito', sans-serif;
         }
+
     </style>
 
     {{-- CKEditor UI --}}
-    <script src="{{asset('ckeditor/ckeditor.js')}}"></script>
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
 
     {{-- CSS --}}
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
@@ -27,33 +28,58 @@
 
     <header>
         <nav class="bg-white shadow dark:bg-gray-800">
-            <div class="container flex items-center justify-center p-6 mx-auto text-gray-600 capitalize dark:text-gray-300">
-                <a href="/" class="text-gray-800 dark:text-gray-200 border-b-2 border-red-400 mx-1.5 sm:mx-6">home</a>
+            <div
+                class="container flex items-center justify-between p-6 mx-auto text-gray-600 capitalize dark:text-gray-300">
+                <div>
+                    <a href="/"
+                        class="text-gray-800 dark:text-gray-200 border-b-2 border-red-400 mx-1.5 sm:mx-6">home</a>
+                </div>
 
-                <a href="/allnote"
-                    class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-red-400 mx-1.5 sm:mx-6">Toutes les notes</a>
+                <div>
 
-                <a href="/note"
-                    class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-red-400 mx-1.5 sm:mx-6">Mes notes</a>
+                    <a href="/allnote"
+                        class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-red-400 mx-1.5 sm:mx-6">Toutes
+                        les notes</a>
+                    @auth
+                        <a href="/note"
+                            class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-red-400 mx-1.5 sm:mx-6">Mes
+                            notes</a>
 
-                    <a href="/createnote"
-                    class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-red-400 mx-1.5 sm:mx-6">Nouvelle note</a>
+                        <a href="/createnote"
+                            class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-red-400 mx-1.5 sm:mx-6">Nouvelle
+                            note</a>
 
-                <a href="/share"
-                    class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-red-400 mx-1.5 sm:mx-6">Notes partagées</a>
+                        <a href="/share"
+                            class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-red-400 mx-1.5 sm:mx-6">Notes
+                            partagées</a>
 
-                <a href="/like"
-                    class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-red-400 mx-1.5 sm:mx-6">Likes</a>
+                        <a href="/like"
+                            class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-red-400 mx-1.5 sm:mx-6">Likes</a>
+                    @endauth
+                </div>
 
                 @if (Route::has('login'))
-                    <div>
+                    <div class="ml-25 flex">
                         @auth
-                            <a href="{{ url('/dashboard') }}" class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-yellow-300 mx-1.5 sm:mx-6">Dashboard</a>
+                            <a
+                                class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-yellow-300 mx-1.5 sm:mx-6">{{ Auth::user()->name }}</a>
+
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit"
+                                class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-yellow-300 mx-1.5 sm:mx-6">Se Déconnecter</button>
+                            </form>
+                            @if (Auth::user()->role_id == 1)
+                                <a href="{{ url('/dashboard') }}"
+                                    class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-yellow-300 mx-1.5 sm:mx-6">Dashboard</a>
+                            @endif
                         @else
-                            <a href="{{ route('login') }}" class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-yellow-300 mx-1.5 sm:mx-6">Log in</a>
-        
+                            <a href="{{ route('login') }}"
+                                class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-yellow-300 mx-1.5 sm:mx-6">Se Connecter</a>
+
                             @if (Route::has('register'))
-                                <a href="{{ route('register') }}" class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-yellow-300 mx-1.5 sm:mx-6">Register</a>
+                                <a href="{{ route('register') }}"
+                                    class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-yellow-300 mx-1.5 sm:mx-6">S'inscrire</a>
                             @endif
                         @endauth
                     </div>

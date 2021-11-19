@@ -13,7 +13,7 @@
 
                     <div>
                         <h1 class="mt-2 text-lg font-semibold text-gray-800 dark:text-white">{{ $note->title }}</h1>
-                        <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">{!! Str::limit($note->content, 100, '...') !!}</p>
+                        <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">{!! Str::limit($note->content, 15, '...') !!}</p>
                     </div>
 
                     <div>
@@ -27,26 +27,28 @@
                         </div>
 
                         <div class="flex items-center justify-center mt-4">
-                            @php
-                                $check = $tab->where('note_id', $note->id)->first();
-                            @endphp
-                            @if (Auth::user()->aime < 10)
-                                @if ($check)
-                                    <form action="/note/unlike/{{ $note->id }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="mr-2 text-xl">
-                                            ❤ 
-                                        </button>
-                                    </form>
-                                @else
-                                    <form action="/note/like/{{ $note->id }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="mr-2 text-xl">
-                                            ♡
-                                        </button>
-                                    </form>
+                            @auth
+                                @php
+                                    $check = $tab->where('note_id', $note->id)->first();
+                                @endphp
+                                @if (Auth::user()->aime < 10)
+                                    @if ($check)
+                                        <form action="/note/unlike/{{ $note->id }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="mr-2 text-xl">
+                                                ❤
+                                            </button>
+                                        </form>
+                                    @else
+                                        <form action="/note/like/{{ $note->id }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="mr-2 text-xl">
+                                                ♡
+                                            </button>
+                                        </form>
+                                    @endif
                                 @endif
-                            @endif
+                            @endauth
                             <span class="mr-5">{{ $note->aime }}</span>
 
                             <a href="/note/{{ $note->id }}"

@@ -1,6 +1,6 @@
 @extends('layouts.index')
 @section('content')
-
+    @include('layouts.flash')
     <div class="flex justify-center mt-10">
         <a href="/createnote"
             class="px-4 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-red-400 rounded-md hover:bg-yellow-300 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-80">
@@ -23,7 +23,7 @@
 
                             <div>
                                 <h1 class="mt-2 text-lg font-semibold text-gray-800 dark:text-white">{{ $note->title }}</h1>
-                                <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">{!! Str::limit($note->content, 40, '...') !!}</p>
+                                <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">{!! Str::limit($note->content, 15, '...') !!}</p>
                             </div>
 
                             <div>
@@ -36,8 +36,19 @@
                                     </p>
                                 </div>
 
-                                <div class="flex">
-                                    @if (Auth::user()->aime < 10)
+                                <div class="flex mt-2">
+                                    @php
+                                    $check = $tab->where('note_id', $note->id)->first();
+                                @endphp
+                                @if (Auth::user()->aime < 10)
+                                    @if ($check)
+                                        <form action="/note/unlike/{{ $note->id }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="mr-2 text-xl">
+                                                ❤ 
+                                            </button>
+                                        </form>
+                                    @else
                                         <form action="/note/like/{{ $note->id }}" method="POST">
                                             @csrf
                                             <button type="submit" class="mr-2 text-xl">
@@ -45,7 +56,8 @@
                                             </button>
                                         </form>
                                     @endif
-                                    <span class="mr-5">{{ $note->aime }}</span>
+                                @endif
+                                <span class="mr-5">{{ $note->aime }}</span>
                                 </div>
 
                                 <div class="flex items-center justify-center mt-4">

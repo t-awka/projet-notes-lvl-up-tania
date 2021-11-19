@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\DB;
 
 class LikeController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('MobileCheck')->only('index');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +31,10 @@ class LikeController extends Controller
         foreach ($likes as $like) {
             array_push($test, $like);
         }
-        return view('pages.like',compact('notes', 'test'));
+
+        $tab = DB::table('likes')->where('user_id', Auth::user()->id)->get();
+
+        return view('pages.like',compact('notes', 'test', 'tab'));
     }
 
     /**

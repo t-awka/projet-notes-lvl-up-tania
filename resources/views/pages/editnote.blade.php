@@ -1,7 +1,7 @@
 @extends('layouts.index')
 @section('content')
-
-    <section class="w-full max-w-2xl px-6 py-4 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800 mt-20">
+    @include('layouts.flash')
+    <section class="w-full max-w-7xl px-6 py-4 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800 mt-20">
         <h2 class="text-3xl font-bold text-center text-gray-800 dark:text-white">Ma nouvelle note</h2>
         
         <div class="mt-6 ">
@@ -82,9 +82,8 @@
                 </div>
 
                 <div class="flex items-center justify-between mt-4">
-                    <a href="/allnote" class="text-red-400 dark:text-blue-400 hover:underline">Retour</a>
+                    <a href="/note" class="text-red-400 dark:text-blue-400 hover:underline">Retour</a>
 
-                <div class="flex justify-center mt-6">
                     <button type="submit" class="px-4 py-2 text-white transition-colors duration-200 transform bg-red-400 rounded-md hover:bg-yellow-300 focus:outline-none focus:bg-yellow-300">Enregistrer</button>
                 </div>
             </form>

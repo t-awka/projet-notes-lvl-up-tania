@@ -26,16 +26,20 @@ Route::get('/', function () {
 });
 
 Route::get('/allnote', function () {
-    $notes = Note::all();
-    $user = User::find(Auth::user()->id);
-    $likes = $user->likes;
-    $test = [];
-    foreach ($likes as $like) {
-        array_push($test, $like);
+    $notes = Note::orderBy('aime', 'DESC')->get();
+    if (Auth::check()) {
+        $user = User::find(Auth::user()->id);
+        $likes = $user->likes;
+        $test = [];
+        foreach ($likes as $like) {
+            array_push($test, $like);
+        }
+        $tab = DB::table('likes')->where('user_id', Auth::user()->id)->get();
+        return view('pages.allnote', compact('notes', 'likes', 'test', 'tab'));
+    } else {
+        return view('pages.allnote', compact('notes'));
     }
-    $tab = DB::table('likes')->where('user_id', Auth::user()->id)->get();
-    return view('pages.allnote', compact('notes', 'likes', 'test', 'tab'));
-});
+})->middleware('MobileCheck');
 
 Route::get('/createnote', function () {
     $notes = Note::all();
@@ -52,6 +56,6 @@ Route::post('/share/{id}/shared', [ShareController::class, 'share']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+})->middleware(['IsConnected'])->name('dashboard');
 
 require __DIR__.'/auth.php';

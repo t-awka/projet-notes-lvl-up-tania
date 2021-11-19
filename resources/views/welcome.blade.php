@@ -1,7 +1,7 @@
 @extends('layouts.index')
 @section('content')
     <section>
-        <div class="relative flex items-top justify-center min-h-screen sm:items-center ">
+        <div class="relative flex items-top justify-center min-h-screen sm:items-center bg-gray-100">
             <div class="row">
                 <div class="col">
                     <div class="flex justify-center">
@@ -15,11 +15,13 @@
                     </div>
                 </div>
 
-                <div class="col flex justify-center mt-20">
-                    <a href="/createnote" class="px-4 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-red-400 rounded-md hover:bg-yellow-300 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-80">
-                        créer une nouvelle note
-                    </a>
-                </div>
+                @auth()
+                    <div class="col flex justify-center mt-20">
+                        <a href="/createnote" class="px-4 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-red-400 rounded-md hover:bg-yellow-300 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-80">
+                            créer une nouvelle note
+                        </a>
+                    </div>
+                @endauth
             </div>
         </div>
     </section>

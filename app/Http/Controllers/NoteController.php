@@ -22,8 +22,10 @@ class NoteController extends Controller
     public function index()
     {
         $notes = Note::all();
-        // $perso = DB::table('note_role_user_pivots')->where('user_id', Auth::user()->id)->get();
-        return view('pages.personnal', compact('notes'));
+
+        $tab = DB::table('likes')->where('user_id', Auth::user()->id)->get();
+
+        return view('pages.personnal', compact('notes', 'tab'));
     }
 
     /**
@@ -47,6 +49,7 @@ class NoteController extends Controller
         request()->validate([
             'title' => ["required"],
             'content' => ["required"],
+            'tag1' => ['required']
         ]);
         // transfert des tags dans un nouveau tableau pour vérifier si leur valeur n'est pas égale à null
         $tab_tag = [$request->tag1, $request->tag2, $request->tag3];
@@ -80,7 +83,7 @@ class NoteController extends Controller
             ]
         ]);
 
-        return redirect('/note');
+        return redirect('/note')->with('success', 'Votre note a été crée avec succès');
     }
 
     public function like($id){
@@ -149,6 +152,12 @@ class NoteController extends Controller
      */
     public function update(Request $request, $id)
     {
+        request()->validate([
+            'title' => ["required"],
+            'content' => ["required"],
+            'tag1' => ['required']
+        ]);
+
         $update = Note::find($id);
         $tags = Note_tag::where('note_id', $update->id)->get();
         foreach ($tags as $tag) {
@@ -177,7 +186,7 @@ class NoteController extends Controller
         $update_pivots->roleplus_id = 2;
         $update_pivots->save();
 
-        return redirect('/note/'.$update->id);
+        return redirect('/note/'.$update->id)->with('info', 'Votre note a été modifié avec succès');
     }
 
     /**
